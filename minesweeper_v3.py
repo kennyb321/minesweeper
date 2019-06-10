@@ -23,15 +23,18 @@ class Minesweeper(QWidget):
 
 		
 
-
+		#create grid
 		self.create_board(self)
+
+		#populate grid with 99 random bombs
 		self.populate_bombs()
-		for i in range(20):
-			for j in range(20):
-				self.buttons[i][j]['bombs_touching'] = self.bombs_touching(i, j)
+
+		#test each tile to determine how many bombs are touching that tile
+		self.bombs_touching()
 		self.setGeometry(300,300,300,300)
 		self.setWindowTitle('Minesweeper')
 		self.setStyleSheet("background-color: black")
+		#ignore this. used for testing purposes
 		for i in range(20):
 			for j in range(20):
 				if self.buttons[i][j]['is_bomb'] == True:
@@ -80,7 +83,7 @@ class Minesweeper(QWidget):
 
 
 
-
+		#create a dictionary of information for each tile in the grid
 	def create_dict(self, x, y):
 		dict = {(x, y): QPushButton(),
 				'is_bomb': False,
@@ -89,7 +92,7 @@ class Minesweeper(QWidget):
 				'bombs_touching': 0
 				}
 		return dict
-
+		#ignore this. used for testing and debugging purposes
 	def print_info(self, x, y):
 		print("Coordinates: (" + str(self.x) + ', ' + str(self.y) + ')')
 		print("Is bomb: "+ str(self.buttons[self.x][self.y]['is_bomb']))
@@ -97,38 +100,53 @@ class Minesweeper(QWidget):
 		print("Bombs Touching: " + str(self.buttons[self.x][self.y]['bombs_touching']))
 		print("Is Clicked: " + str(self.buttons[self.x][self.y]['is_clicked']))
 
-
+		#when menu button flag is clicked, allows user to add flag to tiel
+		#I couldnt figure out how to add right-click functionality quite yet, so this button
+		#for the moment is neccessary
 	def flag_button_clicked(self):
 		if not self.flag_active:
 			self.flag_active = True
 		elif self.flag_active:
 			self.flag_active = False
 
-	def bombs_touching(self, x, y):
-		bombs_touching_count = 0
-		try:
 
-			if self.buttons[x-1][y-1]['is_bomb'] == True:
-				bombs_touching_count = bombs_touching_count + 1
-			elif self.buttons[x][y-1]['is_bomb'] == True:
-				bombs_touching_count = bombs_touching_count + 1
-			elif self.buttons[x+1][y-1]['is_bomb'] == True:
-				bombs_touching_count = bombs_touching_count + 1
-			elif self.buttons[x][y-1]['is_bomb'] == True:
-				bombs_touching_count = bombs_touching_count + 1
-			elif self.buttons[x][y+1]['is_bomb'] == True:
-				bombs_touching_count = bombs_touching_count + 1
-			elif self.buttons[x+1][y-1]['is_bomb'] == True:
-				bombs_touching_count = bombs_touching_count + 1
-			elif self.buttons[x+1][y]['is_bomb'] == True:
-				bombs_touching_count = bombs_touching_count + 1
-			elif self.buttons[x+1][y+1]['is_bomb'] == True:
-				bombs_touching_count = bombs_touching_count + 1
+			#supposed to determine how many bombs are touching given tile.
+			#logic is flawed, as it only returns a bombs_touching_count of 0 and 1
+	def bombs_touching(self):
+		
 
-		except IndexError:
-			pass
+		for x in range(20):
+			for y in range(20):
+				bombs_touching_count = 0
+				try:
 
-		return bombs_touching_count
+					if self.buttons[x-1][y-1]['is_bomb'] == True:
+						bombs_touching_count = bombs_touching_count + 1
+					elif self.buttons[x][y-1]['is_bomb'] == True:
+						bombs_touching_count = bombs_touching_count + 1
+					elif self.buttons[x+1][y-1]['is_bomb'] == True:
+						bombs_touching_count = bombs_touching_count + 1
+					elif self.buttons[x][y-1]['is_bomb'] == True:
+						bombs_touching_count = bombs_touching_count + 1
+					elif self.buttons[x][y+1]['is_bomb'] == True:
+						bombs_touching_count = bombs_touching_count + 1
+					elif self.buttons[x+1][y-1]['is_bomb'] == True:
+						bombs_touching_count = bombs_touching_count + 1
+					elif self.buttons[x+1][y]['is_bomb'] == True:
+						bombs_touching_count = bombs_touching_count + 1
+					elif self.buttons[x+1][y+1]['is_bomb'] == True:
+						bombs_touching_count = bombs_touching_count + 1
+
+					self.buttons[x][y]['bombs_touching_count'] = bombs_touching_count
+
+				except IndexError:
+					pass
+
+
+
+	
+
+		
 
 
 
