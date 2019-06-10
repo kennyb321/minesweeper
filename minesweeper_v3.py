@@ -137,7 +137,7 @@ class Minesweeper(QWidget):
 					elif self.buttons[x+1][y+1]['is_bomb'] == True:
 						bombs_touching_count = bombs_touching_count + 1
 
-					self.buttons[x][y]['bombs_touching_count'] = bombs_touching_count
+					self.buttons[x][y]['bombs_touching'] = bombs_touching_count
 
 				except IndexError:
 					pass
